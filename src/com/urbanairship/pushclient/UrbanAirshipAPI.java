@@ -9,6 +9,8 @@ import javax.microedition.io.HttpConnection;
 import net.rim.device.api.io.Base64OutputStream;
 import net.rim.device.api.io.ConnectionClosedException;
 import net.rim.device.api.io.http.HttpProtocolConstants;
+import net.rim.device.api.io.transport.ConnectionDescriptor;
+import net.rim.device.api.io.transport.ConnectionFactory;
 import net.rim.device.api.system.DeviceInfo;
 import net.rim.device.api.ui.UiApplication;
 
@@ -46,7 +48,11 @@ public class UrbanAirshipAPI {
 			}	
         
 		try {
-			httpConn 		= (HttpConnection) Connector.open(url);
+			ConnectionFactory connFact = new ConnectionFactory();
+			ConnectionDescriptor connDesc;
+			connDesc = connFact.getConnection(url);
+
+			httpConn = (HttpConnection)connDesc.getConnection();
 			httpConn.setRequestMethod(httpVerb);
 			httpConn.setRequestProperty("Authorization", "Basic " + new String(encoded));
 			
